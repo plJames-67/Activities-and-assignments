@@ -172,11 +172,21 @@ public class OOP_LAB_ACT {
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        System.out.print()
-        int decision;
+        
+        System.out.print("Choose the program you want to run:");
+        
+        int decision = input.nextInt();
         switch(decision){
-            case 1: 
+            case 1:
+                Lab_Prog1();
+            case 2:
+                Lab_Prog2();
+            case 3:
+                Lab_Prog3();
+            case 4:
+                Lab_Prog4();
+            case 5:
+                Lab_Prog5();
         }
-                
     }
 }
