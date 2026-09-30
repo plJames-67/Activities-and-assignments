@@ -172,7 +172,9 @@ public class OOP_LAB_ACT {
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        
+         char continueChoice;
+         
+        do{
         System.out.print("Choose the program you want to run:");
         
         int decision = input.nextInt();
@@ -187,6 +189,15 @@ public class OOP_LAB_ACT {
                 Lab_Prog4();
             case 5:
                 Lab_Prog5();
+            default:
+                System.out.println("Invalid choice! Please select between 1 and 6.");
         }
+        System.out.print("Do you want to continue? (Y/N): ");
+            continueChoice = input.next().charAt(0);
+            System.out.println();
+        } while (continueChoice == 'Y' || continueChoice == 'y');
+
+        System.out.println("Program terminated. Goodbye!");
     }
+                
 }
