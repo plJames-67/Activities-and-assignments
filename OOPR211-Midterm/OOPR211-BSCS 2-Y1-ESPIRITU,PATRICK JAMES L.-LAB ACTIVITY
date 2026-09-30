@@ -1,11 +1,13 @@
 package com.mycompany.lab_act;
+
 import java.util.Scanner;
 import java.util.Arrays;
 
 public class OOP_LAB_ACT {
-    
-    static void Lab_Prog1(){
-            Scanner input = new Scanner(System.in);
+
+    static Scanner input = new Scanner(System.in);
+
+    static void Lab_Prog1() {
         int size = 10;
         double[] numb = new double[size];
 
@@ -25,7 +27,7 @@ public class OOP_LAB_ACT {
         }
 
         int count_neg = 0;
-        for (int i= 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             if (numb[i] < 0) {
                 count_neg++;
             }
@@ -38,51 +40,52 @@ public class OOP_LAB_ACT {
             }
         }
 
-        double Average = sum_pos / count_pos;
         System.out.println("Sum of positive numbers: " + sum_pos);
-        System.out.println("Average of positive numbers: " + Average);
+        if (count_pos > 0) {
+            System.out.println("Average of positive numbers: " + (sum_pos / count_pos));
+        } else {
+            System.out.println("Average of positive numbers: N/A (no positive numbers)");
+        }
         System.out.println("Count of negative numbers: " + count_neg);
         System.out.println("Minimum value in the array: " + min_val);
     }
-    
-        static void RemoveDupe(int[] arr){
+
+    static void RemoveDupe(int[] arr) {
         int[] uniqueNumb = Arrays.stream(arr).distinct().toArray();
-        
-        System.out.println(Arrays.toString(uniqueNumb));
+        System.out.println("Array without duplicates: " + Arrays.toString(uniqueNumb));
     }
-    
+
     static int getSecondLargest(int[] numb) {
-        
-        Arrays.sort(numb);
+         Arrays.sort(numb);
         
         int sec_max = numb[6];
         return sec_max;
     }
-    
+
     static int getSecondSmallest(int[] numb) {
-        
-        Arrays.sort(numb);
+       Arrays.sort(numb);
         
         int Sec_min = numb[1];
         return Sec_min;
     }
-    
+
     static void Lab_Prog2() {
-        Scanner input = new Scanner(System.in);
         int size = 8;
         int[] numb = new int[size];
-        
-        System.out.println("Please enter 8 integer:");
+
+        System.out.println("Please enter 8 integers:");
         for (int i = 0; i < size; i++) {
             System.out.print("Enter number " + (i + 1) + ": ");
             numb[i] = input.nextInt();
         }
+
         RemoveDupe(numb);
         System.out.println(getSecondLargest(numb));
         System.out.println(getSecondSmallest(numb));
+
     }
+
     static void Lab_Prog3() {
-        Scanner input = new Scanner(System.in);
         int n = 5;
         int[] arr = new int[n];
 
@@ -97,13 +100,18 @@ public class OOP_LAB_ACT {
         }
         System.out.println();
 
-        System.out.print("Enter poss. of Element to Delete: ");
+        System.out.print("Enter position of Element to Delete (0-" + (n - 1) + "): ");
         int pos = input.nextInt();
+
+        if (pos < 0 || pos >= n) {
+            System.out.println("Invalid position. Nothing deleted.");
+            return;
+        }
 
         for (int i = pos; i < n - 1; i++) {
             arr[i] = arr[i + 1];
         }
-        n--; // Reduce logical size of the array
+        n--;
 
         System.out.print("New data in Array: ");
         for (int i = 0; i < n; i++) {
@@ -111,19 +119,23 @@ public class OOP_LAB_ACT {
         }
         System.out.println();
     }
-    static void Lab_Prog4(){
-        Scanner input = new Scanner(System.in);
-        
-        System.out.print("Enter Size of Array : ");
+
+    static void Lab_Prog4() {
+        System.out.print("Enter Size of Array: ");
         int size = input.nextInt();
-        
+
+        if (size <= 0) {
+            System.out.println("Size must be greater than 0.");
+            return;
+        }
+
         int[] numb = new int[size];
-        
+
         System.out.print("Enter any " + size + " elements in Array: ");
         for (int i = 0; i < size; i++) {
             numb[i] = input.nextInt();
         }
-        
+
         System.out.print("Even Elements: ");
         for (int i = 0; i < size; i++) {
             if (numb[i] % 2 == 0) {
@@ -131,7 +143,7 @@ public class OOP_LAB_ACT {
             }
         }
         System.out.println();
-        
+
         System.out.print("Odd Elements: ");
         for (int i = 0; i < size; i++) {
             if (numb[i] % 2 != 0) {
@@ -139,12 +151,32 @@ public class OOP_LAB_ACT {
             }
         }
         System.out.println();
-    } 
-    static void Lab_prog5(){
-        
     }
-    
-    
-    
-}
 
+    static void Lab_Prog5() {
+        int rows = 4;
+
+        for (int i = 1; i <= rows; i++) {
+            for (int j = 1; j <= i; j++) {
+                System.out.print("*");
+                if (j < i) {
+                    System.out.print("A");
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    static void Lab_Prog6() {
+    }
+
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        System.out.print()
+        int decision;
+        switch(decision){
+            case 1: 
+        }
+                
+    }
+}
