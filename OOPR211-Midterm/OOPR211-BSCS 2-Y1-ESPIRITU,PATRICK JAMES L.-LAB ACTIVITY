@@ -10,7 +10,7 @@ public class OOP_LAB_ACT {
     static class Date {
         private String value;
 
-        public Date(String date) {          // e.g. "01/01/1995"
+        public Date(String date) {
             this.value = date;
         }
 
