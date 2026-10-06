@@ -7,6 +7,81 @@ public class OOP_LAB_ACT {
 
     static Scanner input = new Scanner(System.in);
 
+    static class Date {
+        private String value;
+
+        public Date(String date) {          // e.g. "01/01/1995"
+            this.value = date;
+        }
+
+        @Override
+        public String toString() {
+            return value;
+        }
+    }
+    static class Student {
+
+        private static int noOfStudents = 0;
+
+        private String studentNo;
+        private String studentName;
+        private Date dateOfBirth;
+        private int tariffPoints;
+
+        public String getStudentNo()   { return studentNo; }
+        public String getStudentName() { return studentName; }
+        public Date getDateOfBirth()   { return dateOfBirth; }
+        public int getTariffPoints()   { return tariffPoints; }
+
+        public static int getNoOfStudents() { return noOfStudents; }
+
+        public void setStudentNo(String studentNo) {
+            if (studentNo == null || studentNo.trim().isEmpty()) {
+                throw new IllegalArgumentException("Student number must not be empty.");
+            }
+            this.studentNo = studentNo;
+        }
+
+        public void setStudentName(String studentName) {
+            if (studentName == null || studentName.trim().isEmpty()) {
+                throw new IllegalArgumentException("Student name must not be empty.");
+            }
+            this.studentName = studentName;
+        }
+
+        public void setDateOfBirth(Date dateOfBirth) {
+            if (dateOfBirth == null) {
+                throw new IllegalArgumentException("Date of birth must not be null.");
+            }
+            this.dateOfBirth = dateOfBirth;
+        }
+
+        public void setTariffPoints(int tariffPoints) {
+            if (tariffPoints < 20 || tariffPoints > 280) {
+                throw new IllegalArgumentException(
+                    "Tariff points must be between 20 and 280.");
+            }
+            this.tariffPoints = tariffPoints;
+        }
+
+        public Student() {
+            this.studentNo    = "not known";
+            this.studentName  = "not known";
+            this.dateOfBirth  = new Date("01/01/1995");
+            this.tariffPoints = 20;
+            noOfStudents++;
+        }
+
+        public Student(String studentNo, String studentName,
+                       Date dateOfBirth, int tariffPoints) {
+            setStudentNo(studentNo);
+            setStudentName(studentName);
+            setDateOfBirth(dateOfBirth);
+            setTariffPoints(tariffPoints);
+            noOfStudents++;     
+        }
+    }
+
     static void Lab_Prog1() {
         int size = 10;
         double[] numb = new double[size];
@@ -167,7 +242,24 @@ public class OOP_LAB_ACT {
         }
     }
 
-    static void Lab_Prog6() {
+    static void Lab_Prog6() { 
+        Student s1 = new Student();
+
+        Student s2 = new Student("S1001", "Maria Santos",
+                                 new Date("14/03/2004"), 112);
+
+        System.out.println(s1.getStudentName() + ", " + s1.getTariffPoints());
+        System.out.println(s2.getStudentName() + ", " + s2.getTariffPoints());
+        System.out.println("Students created: " + Student.getNoOfStudents());
+
+        try {
+            Student s3 = new Student("S1002", "John Reyes",
+                                     new Date("02/02/2003"), 300); // invalid
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        System.out.println("Students created: " + Student.getNoOfStudents());
     }
 
     public static void main(String[] args) {
@@ -189,6 +281,8 @@ public class OOP_LAB_ACT {
                 Lab_Prog4();
             case 5:
                 Lab_Prog5();
+            case 6:
+                Lab_Prog6();
             default:
                 System.out.println("Invalid choice! Please select between 1 and 6.");
         }
