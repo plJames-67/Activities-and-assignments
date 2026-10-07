@@ -38,35 +38,53 @@ public class OOP_LAB_ACT {
 
         public static int getNoOfStudents() { return noOfStudents; }
 
-        public void setStudentNo(String studentNo) {
-            if (studentNo == null || studentNo.trim().isEmpty()) {
-                throw new IllegalArgumentException("Student number must not be empty.");
-            }
-            this.studentNo = studentNo;
+          public static String validateStudentNo(String s) {
+        if (s == null || s.trim().isEmpty()) {
+            throw new IllegalArgumentException("Student number must not be empty.");
         }
+        return s.trim();
+    }
 
-        public void setStudentName(String studentName) {
-            if (studentName == null || studentName.trim().isEmpty()) {
-                throw new IllegalArgumentException("Student name must not be empty.");
-            }
-            this.studentName = studentName;
+         public static String validateStudentName(String s) {
+        if (s == null || s.trim().isEmpty()) {
+            throw new IllegalArgumentException("Student name must not be empty.");
         }
+        return s.trim();
+    }
 
-        public void setDateOfBirth(Date dateOfBirth) {
-            if (dateOfBirth == null) {
+        public static String validateDateOfBirth(Date d) {
+            if (d == null) {
                 throw new IllegalArgumentException("Date of birth must not be null.");
             }
-            this.dateOfBirth = dateOfBirth;
+            return null;
         }
 
-        public void setTariffPoints(int tariffPoints) {
-            if (tariffPoints < 20 || tariffPoints > 280) {
-                throw new IllegalArgumentException(
-                    "Tariff points must be between 20 and 280.");
-            }
-            this.tariffPoints = tariffPoints;
+        public static int validateTariffPoints(int p) {
+        if (p < 20 || p > 280) {
+            throw new IllegalArgumentException("Tariff points must be between 20 and 280.");
         }
+        return p;
+    }
+        
+        public void setStudentNo(String studentNo) {
+        this.studentNo = validateStudentNo(studentNo);
+    }
 
+    public void setStudentName(String studentName) {
+        this.studentName = validateStudentName(studentName);
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        if (dateOfBirth == null) {
+            throw new IllegalArgumentException("Date of birth must not be null.");
+        }
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setTariffPoints(int tariffPoints) {
+        this.tariffPoints = validateTariffPoints(tariffPoints);
+    }
+        
         public Student() {
             this.studentNo    = "not known";
             this.studentName  = "not known";
@@ -83,6 +101,13 @@ public class OOP_LAB_ACT {
             setTariffPoints(tariffPoints);
             noOfStudents++;
         }
+          @Override
+        public String toString() {
+        return "Student No: " + studentNo
+             + " | Name: " + studentName
+             + " | DOB: " + dateOfBirth
+             + " | Tariff Points: " + tariffPoints;
+    }
     }
 
     static void Lab_Prog1() {
@@ -247,36 +272,88 @@ public class OOP_LAB_ACT {
     }
 
     static void Lab_Prog6() {
-        Student s1 = new Student();
+        Student defaultStudent = new Student();
+        System.out.println("Default student: " + defaultStudent);
+        System.out.println();
 
-        Student s2 = new Student("S1001", "Maria Santos",
-                                 new Date("14/03/2004"), 112);
+        System.out.println("Enter details for a new student:");
 
-        System.out.println(s1.getStudentName() + ", " + s1.getTariffPoints());
-        System.out.println(s2.getStudentName() + ", " + s2.getTariffPoints());
-        System.out.println("Students created: " + Student.getNoOfStudents());
-
+    String studentNo = null;
+    while (studentNo == null) {
+        System.out.print("Student number: ");
         try {
-            Student student = new Student("S1002", "John Reyes",
-                    new Date("02/02/2003"), 300); 
+            studentNo = Student.validateStudentNo(input.nextLine());
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
         }
-
-        System.out.println("Students created: " + Student.getNoOfStudents());
     }
+
+    String studentName = null;
+    while (studentName == null) {
+        System.out.print("Student name: ");
+        try {
+            studentName = Student.validateStudentName(input.nextLine());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    Date dob = null;
+    while (dob == null) {
+        System.out.print("Date of birth (dd/MM/yyyy): ");
+        try {
+            dob = new Date(input.nextLine());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    int tariff = -1;
+    while (tariff == -1) {
+        System.out.print("Tariff points (20-280): ");
+        try {
+            tariff = Student.validateTariffPoints(Integer.parseInt(input.nextLine().trim()));
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Please enter a whole number.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    Student s = new Student(studentNo, studentName, dob, tariff);
+
+    System.out.println();
+    System.out.println("Student created: " + s);
+    System.out.println("Students created so far: " + Student.getNoOfStudents());
+    }
+   
 
     static void Lab_Prog7(String fileName) {
-    File file = new File(fileName);
+        File file = new File(fileName);
 
-    try (Scanner fileScanner = new Scanner(file)) {
-        while (fileScanner.hasNextLine()) {
-            System.out.println(fileScanner.nextLine());
+        try (Scanner fileScanner = new Scanner(file)) {
+            if (fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine();
+                System.out.println("Raw Line: " + line);
+                System.out.println("---------------------------------");
+
+                try (Scanner lineScanner = new Scanner(line)) {
+                    lineScanner.useDelimiter("\t");
+
+                    System.out.println("Split Records:");
+                    int fieldNum = 1;
+                    while (lineScanner.hasNext()) {
+                        System.out.println("Field " + fieldNum + ": " + lineScanner.next());
+                        fieldNum++;
+                    }
+                }
+            } else {
+                System.out.println("The file '" + fileName + "' is empty.");
+            }
+        } catch (FileNotFoundException e) {
+            System.err.println("Error: The file '" + fileName + "' was not found.");
         }
-    } catch (FileNotFoundException e) {
-        System.err.println("Error: The file '" + fileName + "' was not found.");
     }
-}
 
     public static void main(String[] args) {
         char continueChoice;
@@ -321,4 +398,3 @@ public class OOP_LAB_ACT {
         System.out.println("Program terminated. Goodbye!");
     }
 }
-
