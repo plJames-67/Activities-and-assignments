@@ -1,7 +1,9 @@
-package com.mycompany.lab_act;
+package com.mycompany.oop_lab_act;
 
-import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class OOP_LAB_ACT {
 
@@ -19,6 +21,7 @@ public class OOP_LAB_ACT {
             return value;
         }
     }
+
     static class Student {
 
         private static int noOfStudents = 0;
@@ -78,7 +81,7 @@ public class OOP_LAB_ACT {
             setStudentName(studentName);
             setDateOfBirth(dateOfBirth);
             setTariffPoints(tariffPoints);
-            noOfStudents++;     
+            noOfStudents++;
         }
     }
 
@@ -94,22 +97,16 @@ public class OOP_LAB_ACT {
 
         double sum_pos = 0;
         int count_pos = 0;
+        int count_neg = 0;
+        double min_val = numb[0];
+
         for (int i = 0; i < size; i++) {
             if (numb[i] > 0) {
                 sum_pos += numb[i];
                 count_pos++;
-            }
-        }
-
-        int count_neg = 0;
-        for (int i = 0; i < size; i++) {
-            if (numb[i] < 0) {
+            } else if (numb[i] < 0) {
                 count_neg++;
             }
-        }
-
-        double min_val = numb[0];
-        for (int i = 1; i < size; i++) {
             if (numb[i] < min_val) {
                 min_val = numb[i];
             }
@@ -130,18 +127,20 @@ public class OOP_LAB_ACT {
         System.out.println("Array without duplicates: " + Arrays.toString(uniqueNumb));
     }
 
-    static int getSecondLargest(int[] numb) {
-         Arrays.sort(numb);
-        
-        int sec_max = numb[6];
-        return sec_max;
+    static Integer getSecondLargest(int[] numb) {
+        int[] unique = Arrays.stream(numb).distinct().sorted().toArray();
+        if (unique.length < 2) {
+            return null;
+        }
+        return unique[unique.length - 2];
     }
 
-    static int getSecondSmallest(int[] numb) {
-       Arrays.sort(numb);
-        
-        int Sec_min = numb[1];
-        return Sec_min;
+    static Integer getSecondSmallest(int[] numb) {
+        int[] unique = Arrays.stream(numb).distinct().sorted().toArray();
+        if (unique.length < 2) {
+            return null;
+        }
+        return unique[1];
     }
 
     static void Lab_Prog2() {
@@ -155,9 +154,14 @@ public class OOP_LAB_ACT {
         }
 
         RemoveDupe(numb);
-        System.out.println(getSecondLargest(numb));
-        System.out.println(getSecondSmallest(numb));
 
+        Integer secLargest = getSecondLargest(numb);
+        Integer secSmallest = getSecondSmallest(numb);
+
+        System.out.println("Second largest: "
+                + (secLargest != null ? secLargest : "N/A (fewer than 2 distinct values)"));
+        System.out.println("Second smallest: "
+                + (secSmallest != null ? secSmallest : "N/A (fewer than 2 distinct values)"));
     }
 
     static void Lab_Prog3() {
@@ -242,7 +246,7 @@ public class OOP_LAB_ACT {
         }
     }
 
-    static void Lab_Prog6() { 
+    static void Lab_Prog6() {
         Student s1 = new Student();
 
         Student s2 = new Student("S1001", "Maria Santos",
@@ -253,8 +257,8 @@ public class OOP_LAB_ACT {
         System.out.println("Students created: " + Student.getNoOfStudents());
 
         try {
-            Student s3 = new Student("S1002", "John Reyes",
-                                     new Date("02/02/2003"), 300); // invalid
+            Student student = new Student("S1002", "John Reyes",
+                    new Date("02/02/2003"), 300); 
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -262,36 +266,58 @@ public class OOP_LAB_ACT {
         System.out.println("Students created: " + Student.getNoOfStudents());
     }
 
-    public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-         char continueChoice;
-         
-        do{
-        System.out.print("Choose the program you want to run:");
-        
-        int decision = input.nextInt();
-        switch(decision){
-            case 1:
-                Lab_Prog1();
-            case 2:
-                Lab_Prog2();
-            case 3:
-                Lab_Prog3();
-            case 4:
-                Lab_Prog4();
-            case 5:
-                Lab_Prog5();
-            case 6:
-                Lab_Prog6();
-            default:
-                System.out.println("Invalid choice! Please select between 1 and 6.");
+    static void Lab_Prog7(String fileName) {
+    File file = new File(fileName);
+
+    try (Scanner fileScanner = new Scanner(file)) {
+        while (fileScanner.hasNextLine()) {
+            System.out.println(fileScanner.nextLine());
         }
-        System.out.print("Do you want to continue? (Y/N): ");
+    } catch (FileNotFoundException e) {
+        System.err.println("Error: The file '" + fileName + "' was not found.");
+    }
+}
+
+    public static void main(String[] args) {
+        char continueChoice;
+
+        do {
+            System.out.print("Choose the program you want to run (1-7): ");
+
+                int decision = input.nextInt();
+                switch (decision) {
+                    case 1:
+                        Lab_Prog1();
+                        break;
+                    case 2:
+                        Lab_Prog2();
+                        break;
+                    case 3:
+                        Lab_Prog3();
+                        break;
+                    case 4:
+                        Lab_Prog4();
+                        break;
+                    case 5:
+                        Lab_Prog5();
+                        break;
+                    case 6:
+                        Lab_Prog6();
+                        break;
+                    case 7:
+                        System.out.print("Enter file name: ");
+                        String fileName = input.next();
+                        Lab_Prog7(fileName);
+                        break;
+                    default:
+                        System.out.println("Invalid choice! Please select between 1 and 7.");
+                }
+
+            System.out.print("Do you want to continue? (Y/N): ");
             continueChoice = input.next().charAt(0);
             System.out.println();
         } while (continueChoice == 'Y' || continueChoice == 'y');
 
         System.out.println("Program terminated. Goodbye!");
     }
-                
 }
